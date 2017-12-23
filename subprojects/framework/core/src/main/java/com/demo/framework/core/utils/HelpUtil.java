@@ -17,8 +17,6 @@ import java.util.function.Function;
 
 import org.springframework.util.StringUtils;
 
-import com.demo.framework.core.model.BusinessException;
-
 public class HelpUtil extends StringUtils {
     public static final String DATETIME_PATTERN_DEFUALT = "yyyy-MM-dd HH:mm:ss";
     public static final String DATETIME_PATTERN_DAYBEGIN = "yyyy-MM-dd 00:00:00";
@@ -210,18 +208,19 @@ public class HelpUtil extends StringUtils {
         return Timestamp.valueOf(getSimpleDateFormat("yyyy-MM-dd 23:59:59.999999999").format(time.getTime()));
     }
 
-    public static Timestamp addDays(Timestamp time, int amount) {
+    public static Timestamp addTime(Timestamp time, int unit, int amount) {
         Calendar c = Calendar.getInstance();
         c.setTime(time);
-        c.add(Calendar.DATE, amount);
+        c.add(unit, amount);
         return new Timestamp(c.getTimeInMillis());
     }
 
+    public static Timestamp addDays(Timestamp time, int amount) {
+        return addTime(time, Calendar.DAY_OF_MONTH, amount);
+    }
+
     public static Timestamp addMonths(Timestamp time, int amount) {
-        Calendar c = Calendar.getInstance();
-        c.setTime(time);
-        c.add(Calendar.MONTH, amount);
-        return new Timestamp(c.getTimeInMillis());
+        return addTime(time, Calendar.MONTH, amount);
     }
 
     public static String formatDatetime(Date date) {
@@ -248,8 +247,12 @@ public class HelpUtil extends StringUtils {
         try {
             return getSimpleDateFormat(pattern).parse(dateStr);
         } catch (ParseException e) {
-            throw new BusinessException("解析日期失败！", e);
+            throw new RuntimeException("解析日期失败！", e);
         }
+    }
+
+    public static Timestamp truncateTimestamp(Timestamp time, String pattern) {
+        return parseTimestamp(formatDatetime(time, pattern), DATETIME_PATTERN_DEFUALT);
     }
 
     public static Timestamp parseTimestamp(String dateStr) {

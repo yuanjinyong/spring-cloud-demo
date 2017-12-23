@@ -18,9 +18,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import com.demo.framework.core.model.BusinessException;
+import com.demo.framework.core.exception.BusinessException;
 import com.demo.framework.core.model.Page;
-import com.demo.framework.core.model.Params;
+import com.demo.framework.core.model.ParamsMap;
 import com.demo.framework.core.model.Result;
 import com.demo.framework.core.utils.HelpUtil;
 import com.demo.framework.service.model.ResponseResult;
@@ -97,18 +97,16 @@ public abstract class SuperApi {
         return HelpUtil.isEmpty(value) ? defaultValue : Double.parseDouble(value);
     }
 
-    public static Params $params() {
+    public static ParamsMap $params() {
         return $params(null);
     }
 
     public static <T> Page<T> $page() {
-        Page<T> page = new Page<>($int(Params.PAGE_SIZE, 0), $int(Params.PAGE_NO, 0));
-        page.setOrderBy($(Params.ORDER_BY, null));
-        return page;
+        return $params(null).page();
     }
 
-    public static Params $params(String prefix) {
-        Params params = new Params();
+    public static ParamsMap $params(String prefix) {
+        ParamsMap paramsMap = new ParamsMap();
 
         int prefixLength = prefix == null ? 0 : prefix.length();
         HttpServletRequest request = getRequest();
@@ -120,14 +118,14 @@ public abstract class SuperApi {
                 if (values == null || values.length == 0) {
                     // Do nothing, no values found at all.
                 } else if (values.length > 1) {
-                    params.put(paramName.substring(prefixLength), values);
+                    paramsMap.put(paramName.substring(prefixLength), values);
                 } else {
-                    params.put(paramName.substring(prefixLength), values[0]);
+                    paramsMap.put(paramName.substring(prefixLength), values[0]);
                 }
             }
         }
 
-        return params;
+        return paramsMap;
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -223,7 +221,7 @@ public abstract class SuperApi {
     public ResponseResult<Object> exceptionHandler(HttpServletRequest request, Exception e) {
         String errorMsg = "";
         if (e instanceof BusinessException) {
-            errorMsg = ((BusinessException) e).getFormattedMessage();
+            errorMsg = ((BusinessException) e).getMessage();
             // } else if (e instanceof DataAccessException) {
             // Throwable root = ((DataAccessException) e).getRootCause();
             // errorMsg = root != null ? root.getMessage() : ((DataAccessException) e).getMessage();

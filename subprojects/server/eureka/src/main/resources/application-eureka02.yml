@@ -2,11 +2,11 @@ spring:
   profiles: eureka02
 
 server:
-  port: 8762
+  port: 51002
 
 eureka:
   instance:
     hostname: eureka02
   client:
     serviceUrl:
-      defaultZone: http://eureka01:8761/eureka/
+      defaultZone: http://eureka01:51001/eureka/

@@ -1,41 +1,53 @@
+/**
+ * 
+ */
 package com.demo.framework.core.model;
 
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.util.Collections;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.ResourceBundle;
+import java.util.TreeMap;
 
 /**
  * @author 袁进勇
  *
  */
-public class Params extends HashMap<String, Object> {
+public class ParamsMap extends TreeMap<String, Object> {
     private static final long serialVersionUID = 1L;
 
+    /**
+     * 默认首页从0开始编号
+     */
+    private static final Integer DEFAULT_FIRST_PAGE_NO = 0;
+    /**
+     * 默认每页10条
+     */
     private static final Integer DEFAULT_PAGE_SIZE = 10;
     private static final Integer MAX_PAGE_SIZE = 10000;
-    private static final String PAGE_SIZE = "pageSize";
+    private static final String FIRST_PAGE_NO = "firstPageNo";
     private static final String PAGE_NO = "pageNo";
+    private static final String PAGE_SIZE = "pageSize";
     private static final String PAGE_ITEMS = "pageItems";
     private static final String TOTAL_COUNT = "totalCount";
     private static final String ORDER_BY = "orderBy";
 
-    public Params() {
+    public ParamsMap() {
         super();
     }
 
-    public Params(final String key, Object value) {
+    public ParamsMap(final String key, Object value) {
         super();
         put(key, value);
     }
 
-    public Params(Map<String, Object> map) {
+    public ParamsMap(Map<String, Object> map) {
         super();
         this.putAll(map);
     }
@@ -44,19 +56,19 @@ public class Params extends HashMap<String, Object> {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    public Params put(String key, Object value) {
+    public ParamsMap put(String key, Object value) {
         super.put(key, value);
         return this;
     }
 
-    public Params safePut(String key, Object value) {
+    public ParamsMap safePut(String key, Object value) {
         if (value != null) {
             put(key, value);
         }
         return this;
     }
 
-    public Params safePut(String key, Object value, Object defaultValue) {
+    public ParamsMap safePut(String key, Object value, Object defaultValue) {
         if (value == null) {
             put(key, defaultValue);
         } else {
@@ -65,7 +77,7 @@ public class Params extends HashMap<String, Object> {
         return this;
     }
 
-    public Params putAll(final ResourceBundle resourceBundle) {
+    public ParamsMap putAll(final ResourceBundle resourceBundle) {
         Enumeration<String> enumeration = resourceBundle.getKeys();
         while (enumeration.hasMoreElements()) {
             String key = enumeration.nextElement();
@@ -345,44 +357,43 @@ public class Params extends HashMap<String, Object> {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public Params setPageSize(Integer pageSize) {
-        return this.put(PAGE_SIZE, pageSize);
+    public ParamsMap setFirstPageNo(Integer firstPageNo) {
+        return this.put(FIRST_PAGE_NO, firstPageNo);
     }
 
-    public Params setPageSizeWithDefault() {
-        return this.put(PAGE_SIZE, DEFAULT_PAGE_SIZE);
+    public Integer getFirstPageNo() {
+        return this.$int(FIRST_PAGE_NO, DEFAULT_FIRST_PAGE_NO);
     }
 
-    public Params setPageSizeWithMax() {
-        return this.put(PAGE_SIZE, MAX_PAGE_SIZE);
+    public ParamsMap defaultPageNo() {
+        return this.setPageNo(this.getFirstPageNo());
     }
 
-    public Integer getPageSize() {
-        return this.$int(PAGE_SIZE, 0);
-    }
-
-    public Params setPageNo(Integer pageNo) {
+    public ParamsMap setPageNo(Integer pageNo) {
         return this.put(PAGE_NO, pageNo);
     }
 
-    /**
-     * 从0开始编号，0为第一页
-     * 
-     * @return
-     */
     public Integer getPageNo() {
-        Integer pageNo = this.$int(PAGE_NO, null);
-        if (pageNo == null) {
-            pageNo = 0;
-            this.put(PAGE_NO, pageNo);
-            return pageNo;
-        }
-
-        int maxPageNo = this.getTotalCount() / this.getPageSize();
-        return pageNo >= maxPageNo ? maxPageNo : pageNo;
+        return this.$int(PAGE_NO, this.getFirstPageNo());
     }
 
-    public <E> Params setPageItems(List<E> pageItems) {
+    public ParamsMap defaultPageSize() {
+        return this.put(PAGE_SIZE, DEFAULT_PAGE_SIZE);
+    }
+
+    public ParamsMap maxPageSize() {
+        return this.put(PAGE_SIZE, MAX_PAGE_SIZE);
+    }
+
+    public ParamsMap setPageSize(Integer pageSize) {
+        return this.put(PAGE_SIZE, pageSize);
+    }
+
+    public Integer getPageSize() {
+        return this.$int(PAGE_SIZE, DEFAULT_PAGE_SIZE);
+    }
+
+    public <E> ParamsMap setPageItems(List<E> pageItems) {
         return this.put(PAGE_ITEMS, pageItems);
     }
 
@@ -390,29 +401,15 @@ public class Params extends HashMap<String, Object> {
         return (List<?>) this.get(PAGE_ITEMS);
     }
 
-    /**
-     * 从0开始编号，0为第一条
-     * 
-     * @return
-     */
-    public Integer getBeginRowNo() {
-        return this.getPageNo() * this.getPageSize();
-    }
-
-    public Params setTotalCount(Integer totalCount) {
+    public ParamsMap setTotalCount(Integer totalCount) {
         return this.put(TOTAL_COUNT, totalCount);
     }
 
     public Integer getTotalCount() {
-        Integer totalCount = this.$int(TOTAL_COUNT, null);
-        if (totalCount == null) {
-            totalCount = 0;
-            this.put(TOTAL_COUNT, totalCount);
-        }
-        return totalCount;
+        return this.$int(TOTAL_COUNT, null);
     }
 
-    public Params setOrderBy(String orderBy) {
+    public ParamsMap setOrderBy(String orderBy) {
         return this.put(ORDER_BY, orderBy);
     }
 
@@ -420,22 +417,42 @@ public class Params extends HashMap<String, Object> {
         return this.$(ORDER_BY, null);
     }
 
-    public boolean hasPagenation() {
+    /**
+     * 从0开始编号，0为第一条，totalCount-1为最后一条
+     * 
+     * @return
+     */
+    public Integer getBeginRowNo() {
+        // Integer totalCount = this.$int(TOTAL_COUNT, 0);
+        Integer firstPageNo = this.$int(FIRST_PAGE_NO, DEFAULT_FIRST_PAGE_NO);
+        // Integer beginRowNo = (this.$int(PAGE_NO, firstPageNo) - firstPageNo) * this.$int(PAGE_SIZE,
+        // DEFAULT_PAGE_SIZE);
+        // return beginRowNo >= totalCount ? (totalCount - 1) : beginRowNo;
+        return (this.$int(PAGE_NO, firstPageNo) - firstPageNo) * this.$int(PAGE_SIZE, DEFAULT_PAGE_SIZE);
+    }
+
+    public boolean hasPageSize() {
         return this.$int(PAGE_SIZE, 0) > 0;
+    }
+
+    public boolean hasTotalCount() {
+        return this.containsKey(TOTAL_COUNT);
+    }
+
+    public boolean hasOrderBy() {
+        String orderBy = this.$(ORDER_BY, null);
+        return !(orderBy == null || orderBy.trim().length() == 0);
+    }
+
+    public <E> Page<E> page() {
+        return this.page(Collections.emptyList());
     }
 
     public <E> Page<E> page(List<E> pageItems) {
         Page<E> page = new Page<>(this.getPageSize(), this.getPageNo());
-        page.setTotalCount(this.hasPagenation() ? this.getTotalCount() : pageItems.size());
+        page.setTotalCount(this.hasPageSize() ? this.getTotalCount() : pageItems.size());
         page.setOrderBy(this.getOrderBy());
         page.setItems(pageItems);
         return page;
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    public Params disableTenantIsolate() {
-        return this.put("disableTenantIsolate", true);
     }
 }

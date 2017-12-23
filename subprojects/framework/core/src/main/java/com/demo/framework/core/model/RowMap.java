@@ -14,19 +14,19 @@ import java.util.ResourceBundle;
  * @author 袁进勇
  *
  */
-public class Row extends HashMap<String, Object> {
+public class RowMap extends HashMap<String, Object> {
     private static final long serialVersionUID = 1L;
 
-    public Row() {
+    public RowMap() {
         super();
     }
 
-    public Row(final String key, Object value) {
+    public RowMap(final String key, Object value) {
         super();
         put(key, value);
     }
 
-    public Row(Map<String, Object> map) {
+    public RowMap(Map<String, Object> map) {
         super();
         this.putAll(map);
     }
@@ -35,19 +35,19 @@ public class Row extends HashMap<String, Object> {
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     @Override
-    public Row put(String key, Object value) {
+    public RowMap put(String key, Object value) {
         super.put(key, value);
         return this;
     }
 
-    public Row safePut(String key, Object value) {
+    public RowMap safePut(String key, Object value) {
         if (value != null) {
             put(key, value);
         }
         return this;
     }
 
-    public Row safePut(String key, Object value, Object defaultValue) {
+    public RowMap safePut(String key, Object value, Object defaultValue) {
         if (value == null) {
             put(key, defaultValue);
         } else {
@@ -56,7 +56,7 @@ public class Row extends HashMap<String, Object> {
         return this;
     }
 
-    public Row putAll(final ResourceBundle resourceBundle) {
+    public RowMap putAll(final ResourceBundle resourceBundle) {
         Enumeration<String> enumeration = resourceBundle.getKeys();
         while (enumeration.hasMoreElements()) {
             String key = enumeration.nextElement();
@@ -332,5 +332,4 @@ public class Row extends HashMap<String, Object> {
         }
         return answer;
     }
-
 }

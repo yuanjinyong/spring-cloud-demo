@@ -31,7 +31,7 @@ include ':service:platform-tools'
 // End of include
 
 
-rootProject.name = 'demo'
+rootProject.name = 'smart-site'
 
 
 settingProjects(rootProject)
