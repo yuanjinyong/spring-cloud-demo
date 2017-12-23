@@ -1,0 +1,4 @@
+dependencies {
+    compile('org.springframework:spring-core')
+    compile('com.fasterxml.jackson.core:jackson-databind')
+}

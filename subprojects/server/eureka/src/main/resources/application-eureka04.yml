@@ -1,0 +1,12 @@
+spring:
+  profiles: eureka04
+
+server:
+  port: 8764
+
+eureka:
+  instance:
+    hostname: eureka04
+  client:
+    serviceUrl:
+      defaultZone: http://eureka03:8763/eureka/

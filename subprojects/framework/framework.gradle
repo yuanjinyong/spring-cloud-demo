@@ -1,0 +1,7 @@
+subprojects {
+    bootRepackage {
+        onlyIf {
+            false
+        }
+    }
+}

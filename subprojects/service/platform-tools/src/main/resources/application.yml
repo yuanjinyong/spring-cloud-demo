@@ -1,0 +1,11 @@
+server:
+  port: 9762
+
+spring:
+  application:
+    name: platform-tools
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8763/eureka/

@@ -1,0 +1,11 @@
+server:
+  port: 9761
+
+spring:
+  application:
+    name: platform-sys
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/

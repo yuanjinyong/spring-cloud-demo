@@ -1,0 +1,65 @@
+plugins.withType(JavaPlugin) {
+    archivesBaseName = "${rootProject.name}-${project.path.replaceAll(':', '-').substring(1)}"
+
+    //指定编码格式
+    [compileJava,compileTestJava,javadoc]*.options*.encoding = 'UTF-8'
+    //指定JDK的版本
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+}
+
+afterEvaluate {
+    plugins.withType(JavaPlugin) {
+        def envResourcesDir = new File(processResources.destinationDir, "env/${project.env}")
+
+        task copyResources(type: Copy) {
+            group processResources.group
+            from envResourcesDir
+            into processResources.destinationDir
+            description = "复制${mainSpec.sourcePaths}目录下的配置文件到${destinationDir}。"
+            onlyIf { envResourcesDir.exists() }
+            outputs.upToDateWhen { false }
+            doFirst { logger.lifecycle(description) }
+            doLast {
+                inputs.files.each { logger.info("复制文件：${it.absolutePath}") }
+            }
+        }
+
+        task deleteResources(type: Delete, dependsOn: copyResources) {
+            group processResources.group
+            delete new File(processResources.destinationDir, "env")
+            description = "删除${delete}。"
+            doFirst { logger.lifecycle(description) }
+        }
+        processResources.finalizedBy deleteResources
+    }
+
+
+    plugins.withType(WarPlugin) {
+        war {
+            exclude '**/.svn'
+            exclude '**/WEB-INF/lib/*.*'
+            doFirst { logger.lifecycle("生成[${new File(war.destinationDir, war.archiveName).absolutePath}]。") }
+        }
+
+        task renameWar(type: Copy, dependsOn: war) {
+            ext {
+                warFile = new File(war.destinationDir, war.archiveName)
+                newFileName = "${war.baseName}.${war.extension}"
+            }
+            group war.group
+            from warFile
+            into war.destinationDir
+            rename { fileName ->
+                newFileName
+            }
+            description = "生成部署包${new File(war.destinationDir, newFileName).absolutePath}"
+            onlyIf { warFile.exists() }
+            doFirst { logger.lifecycle(description) }
+            doLast {
+                inputs.files.each { logger.info("复制文件：${it.absolutePath}") }
+            }
+        }
+        assemble.dependsOn renameWar
+    }
+}

@@ -1,0 +1,24 @@
+spring:
+  profiles: eureka01
+
+server:
+  port: 8761
+
+eureka:
+  instance:
+    hostname: eureka01
+  client:
+    region: cn-shenzhen
+    eurekaServerPort: 8761
+    useDnsForFetchingServiceUrls: true
+    eurekaServerDNSName: eureka.storytel
+    eurekaServerURLContext: eureka
+    registerWithEureka: true
+    fetchRegistry: true
+#    serviceUrl:
+#      defaultZone: http://eureka02:8762/eureka/
+
+endpoints:
+  enabled: false
+  health:
+    enabled: true

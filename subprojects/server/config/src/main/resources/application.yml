@@ -1,0 +1,15 @@
+server:
+  port: 8888
+
+spring:
+  profiles:
+    active: subversion
+  cloud:
+    config:
+      enabled: true
+      server:
+        svn:
+          uri: https://localhost/svn/cloudconfig/
+          username: chenhua
+          password: 123456
+        default-label: trunk #默认查找的就是trunk文件夹下的配置文件
