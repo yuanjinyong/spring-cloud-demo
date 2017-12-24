@@ -1,5 +1,4 @@
 dependencies {
     compile project(':framework:core')
-    compile('org.springframework.cloud:spring-cloud-starter-eureka') // 服务提供者
-    compile('org.springframework.cloud:spring-cloud-starter-feign') // 服务调用者
+    compile('org.springframework.boot:spring-boot-starter-web')
 }

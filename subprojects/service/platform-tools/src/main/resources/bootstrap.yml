@@ -1,0 +1,19 @@
+server:
+  port: 55002
+
+spring:
+  application:
+    name: platform-tools
+  cloud:
+    config:
+      uri: http://localhost:8888/ #如果eureka服务器地址也想从配置中心获取，则这里只能直接写死配置中心的地址，不能采用下面discovery的方式。
+#      discovery: #如果使用discovery的方式，则下面需要写死eureka服务器地址
+#        enabled: true #启用从配置中心读取文件
+#        serviceId: config-server #配置中心的servieId，即服务名
+      label: trunk #远程仓库的分支，master、trunk，这里如果不指定，会使用配置中心设置的默认值
+      profile: dev
+
+#eureka:
+#  client:
+#    serviceUrl:
+#      defaultZone: http://localhost:51000/eureka/
