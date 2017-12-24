@@ -16,8 +16,8 @@ import com.demo.framework.service.consts.ServiceConst;
  * @author 袁进勇
  *
  */
-@FeignClient(value = ServiceConst.PLATFORM_TOOLS)
+@FeignClient(value = ServiceConst.PLATFORM_TOOLS, fallback = UrlClientFallback.class)
 public interface UrlClient {
-    @RequestMapping(value = "/api/tools/urls", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/platform/tools/urls", method = RequestMethod.GET)
     ResponseEntity<Result<Page<Url>>> list();
 }

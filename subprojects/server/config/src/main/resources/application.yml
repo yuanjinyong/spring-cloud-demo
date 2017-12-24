@@ -2,14 +2,25 @@ server:
   port: 8888
 
 spring:
+  application:
+    name: config-server
   profiles:
-    active: subversion
+    active: subversion #可选值：git、subversion，默认使用的git
   cloud:
     config:
-      enabled: true
       server:
         svn:
-          uri: https://localhost/svn/cloudconfig/
-          username: chenhua
+          uri: https://github.com/yuanjinyong/spring-cloud-config.git #配置subversion仓库地址
+          searchPaths: config #配置仓库路径，默认是/
+          username: yjyffc@163.com
           password: 123456
-        default-label: trunk #默认查找的就是trunk文件夹下的配置文件
+#        git:
+#          uri: https://github.com/yuanjinyong/spring-cloud-config.git #配置git仓库地址
+#          searchPaths: config #配置仓库路径，默认是/
+#          username: yjyffc@163.com #访问git仓库的用户名
+#          password: 123456 #访问git仓库的用户密码
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:51000/eureka/

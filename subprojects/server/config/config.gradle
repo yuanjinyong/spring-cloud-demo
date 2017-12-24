@@ -1,4 +1,5 @@
 dependencies {
+    compile('org.tmatesoft.svnkit:svnkit') // 如果不使用git，而使用svn作为配置文件版本管理服务器，则需要添加这个依赖
     compile('org.springframework.cloud:spring-cloud-config-server')
     compile('org.springframework.cloud:spring-cloud-starter-eureka')
 }
