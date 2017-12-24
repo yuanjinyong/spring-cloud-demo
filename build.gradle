@@ -86,6 +86,10 @@ configure(subprojects.findAll{!it.childProjects}) { project ->
 
     install.dependsOn bootRepackage
 
+    bootRun {
+        systemProperties = System.properties
+    }
+
 
     dependencyManagement {
         imports {

@@ -1,9 +1,4 @@
-server:
-  port: 55002
-
 spring:
-  application:
-    name: platform-tools
   cloud:
     config:
       uri: http://localhost:8888/ #如果eureka服务器地址也想从配置中心获取，则这里只能直接写死配置中心的地址，不能采用下面discovery的方式。
