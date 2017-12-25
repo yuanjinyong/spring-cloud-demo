@@ -15,7 +15,7 @@ import com.demo.framework.service.web.api.BaseApi;
 import com.demo.service.platform.tools.entity.UrlEntity;
 
 @RestController
-@RequestMapping(value = "/api/platform/tools/urls")
+@RequestMapping(value = "/urls")
 public class UrlApi extends BaseApi {
     @Value("${foo}")
     private String foo;

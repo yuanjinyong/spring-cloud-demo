@@ -1,0 +1,30 @@
+hystrix:
+  command:
+    config-server:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 10000 #默认为2000
+
+config-server:
+  ribbon:
+    ConnectTimeout: 8000 #默认为1000
+    ReadTimeout: 10000 #默认为1000
+
+zuul:
+  host:
+    socket-timeout-millis: 60000
+    connect-timeout-millis: 60000
+  ignored-services: config-server,platform-sys,platform-tools
+  ignored-patterns: /**/hello/**
+  prefix: /api
+  routes:
+    config-server:
+      path: /config/server/**
+      serviceId: config-server
+    platform-sys:
+      path: /platform/sys/**
+      serviceId: platform-sys
+    platform-tools:
+      path: /platform/tools/**
+      serviceId: platform-tools

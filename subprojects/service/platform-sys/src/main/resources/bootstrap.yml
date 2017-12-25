@@ -6,7 +6,8 @@ spring:
     name: platform-sys
   cloud:
     config:
-      uri: http://localhost:8888/ #如果eureka服务器地址也想从配置中心获取，则这里只能直接写死配置中心的地址，不能采用下面discovery的方式。
+#      uri: http://localhost:8888/ #如果eureka服务器地址也想从配置中心获取，则这里只能直接写死配置中心的地址，不能采用下面discovery的方式。
+      uri: http://localhost:55000/api/config/server/ #如果eureka服务器地址也想从配置中心获取，则这里只能直接写死配置中心的地址，不能采用下面discovery的方式。
 #      discovery: #如果使用discovery的方式，则下面需要写死eureka服务器地址
 #        enabled: true #启用从配置中心读取文件
 #        serviceId: config-server #配置中心的servieId，即服务名

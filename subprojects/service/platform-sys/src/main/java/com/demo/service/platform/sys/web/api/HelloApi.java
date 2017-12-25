@@ -12,7 +12,7 @@ import com.demo.service.platform.sys.clients.Url;
 import com.demo.service.platform.sys.clients.UrlClient;
 
 @RestController
-@RequestMapping(value = "/api/hello")
+@RequestMapping(value = "/hello")
 public class HelloApi {
     @Autowired
     private UrlClient urlClient;
