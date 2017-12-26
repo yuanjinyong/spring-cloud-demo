@@ -1,0 +1,11 @@
+    nexus {
+        sign = false
+        repositoryUrl = "${nexusUrl}/content/repositories/releases/"
+        snapshotRepositoryUrl = "${nexusUrl}/content/repositories/snapshots/"
+    }
+
+    extraArchive {
+        sources = false
+        tests = false
+        javadoc = false
+    }

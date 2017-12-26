@@ -26,6 +26,7 @@ include ':server:config'
 
 include ':framework:core'
 include ':framework:service'
+include ':framework:restdocs'
 include ':service:gateway'
 include ':service:platform-sys'
 include ':service:platform-tools'

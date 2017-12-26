@@ -10,7 +10,8 @@ plugins.withType(JavaPlugin) {
 
 afterEvaluate {
     plugins.withType(JavaPlugin) {
-        def envResourcesDir = new File(processResources.destinationDir, "env/${project.env}")
+        def envDir = new File(processResources.destinationDir, "env")
+        def envResourcesDir = new File(envDir, project.env)
 
         task copyResources(type: Copy) {
             group processResources.group
@@ -27,8 +28,9 @@ afterEvaluate {
 
         task deleteResources(type: Delete, dependsOn: copyResources) {
             group processResources.group
-            delete new File(processResources.destinationDir, "env")
+            delete envDir
             description = "删除${delete}。"
+            onlyIf { envDir.exists() }
             doFirst { logger.lifecycle(description) }
         }
         processResources.finalizedBy deleteResources

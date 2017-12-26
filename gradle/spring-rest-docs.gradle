@@ -1,0 +1,20 @@
+    ext { 
+        snippetsDir = file('build/generated-snippets')
+    }
+
+    test { 
+        outputs.dir snippetsDir
+    }
+
+    asciidoctor {
+        attributes 'snippets': snippetsDir
+        inputs.dir snippetsDir 
+        dependsOn test 
+    }
+
+    jar {
+        dependsOn asciidoctor 
+        from ("${asciidoctor.outputDir}/html5") { 
+            into 'static/docs'
+        }
+    }

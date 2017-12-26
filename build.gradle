@@ -42,6 +42,7 @@ plugins {
   id "org.springframework.boot" version "1.5.9.RELEASE" apply false
   id "io.spring.dependency-management" version "1.0.3.RELEASE" apply false
   id "com.bmuschko.nexus" version "2.3.1" apply false
+  id "org.asciidoctor.convert" version "1.5.7" apply false
 }
 
 
@@ -61,34 +62,14 @@ allprojects {
 
 // 这里只对最底层的子工程进行通用配置
 configure(subprojects.findAll{!it.childProjects}) { project ->
-//    apply plugin: 'eclipse'
-//    apply from: "${gradleDir}/eclipse.gradle"
     apply plugin: 'java'
     apply from: "${gradleDir}/java.gradle"
     apply plugin: 'maven'
     apply plugin: 'com.bmuschko.nexus'
+    apply from: "${gradleDir}/nexus.gradle"
     apply plugin: 'org.springframework.boot'
+    apply from: "${gradleDir}/spring-boot.gradle"
     apply plugin: 'io.spring.dependency-management'
-
-
-    nexus {
-        sign = false
-        repositoryUrl = "${nexusUrl}/content/repositories/releases/"
-        snapshotRepositoryUrl = "${nexusUrl}/content/repositories/snapshots/"
-    }
-
-    extraArchive {
-        sources = false
-        tests = false
-        javadoc = false
-    }
-
-
-    install.dependsOn bootRepackage
-
-    bootRun {
-        systemProperties = System.properties
-    }
 
 
     dependencyManagement {

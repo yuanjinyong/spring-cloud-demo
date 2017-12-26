@@ -1,0 +1,5 @@
+    install.dependsOn bootRepackage
+
+    bootRun {
+        systemProperties = System.properties
+    }
