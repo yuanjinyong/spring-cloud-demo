@@ -1,0 +1,8 @@
+swagger:
+  enable: true
+  base-package: com.demo.service
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    status-page-url-path: /swagger-ui.html

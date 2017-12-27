@@ -1,15 +1,24 @@
+swagger:
+  enable: true
+  base-package: com.demo.service
+
+eureka:
+  instance:
+    prefer-ip-address: true
+    status-page-url-path: /swagger-ui.html
+
 hystrix:
   command:
     config-server:
       execution:
         isolation:
           thread:
-            timeoutInMilliseconds: 10000 #默认为2000
+            timeoutInMilliseconds: 30000 #默认为2000
 
 config-server:
   ribbon:
-    ConnectTimeout: 8000 #默认为1000
-    ReadTimeout: 10000 #默认为1000
+    ConnectTimeout: 20000 #默认为1000
+    ReadTimeout: 30000 #默认为1000
 
 zuul:
   host:

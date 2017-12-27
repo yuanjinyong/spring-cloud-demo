@@ -1,4 +1,5 @@
 dependencies {
+    compile project(':framework:swagger')
     compile project(':framework:core')
     compile('org.springframework.boot:spring-boot-starter-web')
 }

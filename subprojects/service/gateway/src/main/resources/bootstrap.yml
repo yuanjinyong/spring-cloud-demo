@@ -5,6 +5,8 @@ spring:
   application:
     name: gateway
   cloud:
+    inetutils:
+      preferred-networks: 192.168
     config:
 #      uri: http://localhost:8888/ #如果eureka服务器地址也想从配置中心获取，则这里只能直接写死配置中心的地址，不能采用下面discovery的方式。
       discovery: #如果使用discovery的方式，则下面需要写死eureka服务器地址

@@ -1,0 +1,9 @@
+dependencies {
+    compile('org.springframework.boot:spring-boot-starter-web')
+
+    compile "io.springfox:springfox-swagger2:2.7.0"
+    compile "io.springfox:springfox-swagger-ui:2.7.0"
+    // compile "io.springfox:springfox-data-rest:2.7.0"
+    compile "io.springfox:springfox-bean-validators:2.7.0"
+    compile "org.webjars:swagger-ui:3.8.0"
+}

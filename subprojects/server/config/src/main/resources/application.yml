@@ -7,6 +7,8 @@ spring:
   profiles:
     active: subversion #可选值：git、subversion，默认使用的git
   cloud:
+    inetutils:
+      preferred-networks: 192.168
     config:
       server:
         svn:
@@ -21,6 +23,8 @@ spring:
 #          password: 123456 #访问git仓库的用户密码
 
 eureka:
+  instance:
+    prefer-ip-address: true
   client:
     serviceUrl:
       defaultZone: http://localhost:51000/eureka/

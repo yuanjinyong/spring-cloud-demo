@@ -24,6 +24,7 @@ pluginManagement {
 include ':server:eureka'
 include ':server:config'
 
+include ':framework:swagger'
 include ':framework:core'
 include ':framework:service'
 include ':service:gateway'

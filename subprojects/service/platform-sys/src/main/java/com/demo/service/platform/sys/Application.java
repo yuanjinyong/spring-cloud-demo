@@ -8,7 +8,7 @@ import org.springframework.cloud.netflix.feign.EnableFeignClients;
 @EnableFeignClients
 // @EnableDiscoveryClient(autoRegister = false)
 @EnableEurekaClient
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = { "com.demo" })
 public class Application {
 
     public static void main(String[] args) {

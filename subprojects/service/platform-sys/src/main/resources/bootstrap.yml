@@ -5,6 +5,8 @@ spring:
   application:
     name: platform-sys
   cloud:
+    inetutils:
+      preferred-networks: 192.168
     config:
 #      uri: http://localhost:8888/ #如果eureka服务器地址也想从配置中心获取，则这里只能直接写死配置中心的地址，不能采用下面discovery的方式。
       uri: http://localhost:55000/api/config/server/ #如果eureka服务器地址也想从配置中心获取，则这里只能直接写死配置中心的地址，不能采用下面discovery的方式。
